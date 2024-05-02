@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("fridge", include("fridge.urls")),
+    path("fridge/", include("fridge.urls")),
     path("", include("account.urls"))
 ]
 if settings.DEBUG: 

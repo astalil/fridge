@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Sign Up</h1>
     <div class="errors-div">
       <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
     </div>

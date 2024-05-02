@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Sign In</h1>
     <div v-if="errors.length > 0">
       {{ errors }}
     </div>
@@ -58,7 +59,9 @@ export default {
       await axios
         .get("/user-data/")
         .then((response) => {
-          this.userStore.setUserInfo(response.data);
+          console.log("this is login response: ", response.data)
+          this.userStore.setUserInfo(response.data.user, response.data.fridges);
+          
           this.$router.push("/");
         })
         .catch((error) => {

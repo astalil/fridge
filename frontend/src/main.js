@@ -13,6 +13,9 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Password from "primevue/password";
 import FloatLabel from "primevue/floatlabel";
+import Dialog from 'primevue/dialog';
+import OrderList from 'primevue/orderlist';
+
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 
@@ -25,5 +28,7 @@ app.component("InputText", InputText);
 app.component("Button", Button);
 app.component("Password", Password);
 app.component("FloatLabel", FloatLabel);
+app.component("Dialog", Dialog);
+app.component("OrderList", OrderList);
 
 app.mount("#app");
