@@ -17,8 +17,14 @@
       </FloatLabel>
     </div>
     <div>
+      <a href="login">Forgot your password?</a>
+    </div>
+    <div>
       <Button @click="submit" severity="success" label="Login" />
     </div>
+    <div>
+        <p>Don't have an account yet? <a href="register">Sign Up</a></p>
+      </div>
   </div>
 </template>
 

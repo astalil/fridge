@@ -34,3 +34,14 @@ class AddFridgeSerializer(serializers.ModelSerializer):
     def create(self, velidated_data):
         fridge = Fridge.objects.create(**self.validated_data)
         return fridge
+    
+
+class InvitationSerilizer(serializers.ModelSerializer):
+    sender_mail = serializers.CharField(source='sender.email', read_only=True)
+    sender_name = serializers.CharField(source='sender.first_name', read_only=True)
+    sender_surname = serializers.CharField(source='sender.last_name', read_only=True)
+    fridge_name = serializers.CharField(source='fridge.name', read_only=True)
+
+    class Meta:
+        model = Invitation
+        fields = ['id', 'sender_mail', 'sender_name', 'sender_surname', 'fridge_name']

@@ -1,0 +1,24 @@
+/* START APP PAGE */
+#navbar-burger {
+    float:right;
+}
+a {
+    text-decoration: none;
+}
+
+/* END APP PAGE */
+
+/* START REGISTER PAGE */
+
+.register-div {
+  
+    /* background-image: url("../assets/fridge.jpeg");
+    background-size: cover;
+    background-position: center; */
+}
+
+.inside-register-div {
+    margin: 20px;
+}
+
+/* END REGISTER PAGE */

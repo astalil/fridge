@@ -29,6 +29,7 @@ class Invitation(models.Model):
     receiver = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='received_invitations')
     fridge = models.ForeignKey(Fridge, on_delete=models.DO_NOTHING, related_name='invitations')
     accepted = models.BooleanField(default=False)
+    declined = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):

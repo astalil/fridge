@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from .serializer import *
 from rest_framework.response import Response
 from account.models import User
+from django.db.models import Q
+from account.serializers import FridgeSerializer
 
 # Create your views here.
 class CreateFridge(APIView):
@@ -61,9 +63,53 @@ class AddNewFridgeView(APIView):
         print(data)
         serializer = AddFridgeSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            fridge = serializer.save()
+            #user_fridges = Fridge.objects.filter(fridge)
+            #fridge_data = FridgeSerializer(user_fridges, many=True, context={'request': request}).data
+            fridge_data = {
+                'id': fridge.pk,
+                'name': fridge.name,
+                'owner': request.user.pk,
+                'items': [],
+                'is_owner': True,
+            }
         else:
             print(serializer.errors)
             return Response({'message': 'error', 'error': serializer.errors})
+        
+        return Response({'message': 'success', 'fridge': fridge_data })
 
+class RemoveItemFromFridgeView(APIView):
+    def post(self, request, *args, **kwargs):
+        Item.objects.filter(pk__in = request.data['items']).delete()
         return Response({'message': 'success'})
+
+class InvitationsView(APIView):
+    def get(self, request):
+        invites = Invitation.objects.filter(receiver = request.user, accepted = False, declined = False)
+        serializer = InvitationSerilizer(invites, many=True).data
+        
+        print(serializer)
+        return Response({'message': 'success', 'invites': serializer})
+    
+class InviteActionView(APIView):
+    def post(self, request):
+        data = request.data
+        print(data)
+        invite = Invitation.objects.filter(pk = data['invite_id'], accepted= False, declined=False)
+        if not invite.exists():
+            return Response({'message': 'error', 'error': 'Invite does not exist'})
+        
+        invite=invite.first()
+        if data['action'] == 'accept':
+            invite.accepted = True
+            fridge = Fridge.objects.filter(pk = invite.pk).first()
+            fridge.members.add(request.user)
+            serializer = FridgeSerializer(fridge, context={'request': request}).data
+        else:
+            invite.declined = True
+            serializer = []
+        invite.save()
+
+        print(serializer)
+        return Response({'message': 'success', 'fridge': serializer})

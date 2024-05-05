@@ -43,7 +43,8 @@ class UserDataView(APIView):
             {
                 'id': user.pk,
                 'email': user.email,
-                'name': user.first_name
+                'name': user.first_name,
+                'surname': user.last_name
             },
             'fridges': fridge_data 
         }

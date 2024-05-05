@@ -1,41 +1,48 @@
 <template>
-  <div>
-    <h1>Sign Up</h1>
-    <div class="errors-div">
-      <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-    </div>
-    <div class="input-div">
-      <FloatLabel>
-        <InputText id="first_name" v-model="form.first_name" />
-        <label for="first_name">First name</label>
-      </FloatLabel>
-    </div>
-    <div class="input-div">
-      <FloatLabel>
-        <InputText id="last_name" v-model="form.last_name" />
-        <label for="last_name">Last name</label>
-      </FloatLabel>
-    </div>
-    <div class="input-div">
-      <FloatLabel>
-        <InputText type="email" id="email" v-model="form.email" />
-        <label for="email">Email</label>
-      </FloatLabel>
-    </div>
-    <div class="input-div">
-      <FloatLabel>
-        <Password v-model="form.password1" inputId="password" />
-        <label for="password">Password</label>
-      </FloatLabel>
-    </div>
-    <div class="input-div">
-      <FloatLabel>
-        <Password v-model="form.password2" inputId="password2" />
-        <label for="password2">Repeat password</label>
-      </FloatLabel>
-    </div>
-    <div>
-      <Button @click="submit" severity="success" label="Register" />
+  <div class="register-div">
+    <div class="inside-register-div">
+    
+      <h1>Create a New Account</h1>
+      <div class="errors-div">
+        <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+      </div>
+      <div class="input-div">
+        <FloatLabel>
+          <InputText id="first_name" v-model="form.first_name" />
+          <label for="first_name">First name</label>
+        </FloatLabel>
+      </div>
+      <div class="input-div">
+        <FloatLabel>
+          <InputText id="last_name" v-model="form.last_name" />
+          <label for="last_name">Last name</label>
+        </FloatLabel>
+      </div>
+      <div class="input-div">
+        <FloatLabel>
+          <InputText type="email" id="email" v-model="form.email" />
+          <label for="email">Email</label>
+        </FloatLabel>
+      </div>
+      <div class="input-div">
+        <FloatLabel>
+          <Password v-model="form.password1" inputId="password" />
+          <label for="password">Password</label>
+        </FloatLabel>
+      </div>
+      <div class="input-div">
+        <FloatLabel>
+          <Password v-model="form.password2" inputId="password2" />
+          <label for="password2">Repeat password</label>
+        </FloatLabel>
+      </div>
+      <div>
+        <Button @click="submit" severity="success" label="Register" />
+      </div>
+
+      <div>
+        <p>Already have an account? <a href="login">Sign In</a></p>
+      </div>
     </div>
   </div>
 </template>

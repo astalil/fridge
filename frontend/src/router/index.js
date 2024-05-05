@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
 import FridgeItems from "../views/FridgeItems.vue";
+import InvitationListView from "../views/InvitationListView.vue";
 
 import { useUserStore } from "@/store/user";
 const routes = [
@@ -50,6 +51,14 @@ const routes = [
       next('/login')
     }
   },
+  {
+    path: "/invites",
+    name: "invites",
+    component: InvitationListView,
+    meta: {
+      requiresAuth: true,
+    }
+  }
 ];
 
 const router = createRouter({
