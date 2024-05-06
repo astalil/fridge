@@ -46,10 +46,10 @@ const routes = [
       requiresAuth: true,
     },
     beforeEnter: (to, from, next) => {
-      const store = useUserStore()
-      store.removeToken()
-      next('/login')
-    }
+      const store = useUserStore();
+      store.removeToken();
+      next("/login");
+    },
   },
   {
     path: "/invites",
@@ -57,8 +57,8 @@ const routes = [
     component: InvitationListView,
     meta: {
       requiresAuth: true,
-    }
-  }
+    },
+  },
 ];
 
 const router = createRouter({
@@ -69,21 +69,22 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useUserStore();
   if (to.meta.requiresAuth) {
-    console.log("In if 1")
+    console.log("In if 1");
     if (store.user.isAuthenticated) {
-      console.log("In if 2")
+      console.log("In if 2");
       next();
     } else {
-      console.log("In if 3")
+      console.log("In if 3");
       next("/login");
     }
-  }
-  else if ((store.user.isAuthenticated && to.name === 'login') || (store.user.isAuthenticated && to.name === 'register')) {
-    console.log("In else if")
-    next("/")
-  }
-  else {
-    console.log("In else")
+  } else if (
+    (store.user.isAuthenticated && to.name === "login") ||
+    (store.user.isAuthenticated && to.name === "register")
+  ) {
+    console.log("In else if");
+    next("/");
+  } else {
+    console.log("In else");
     next();
   }
 });

@@ -1,9 +1,12 @@
 /* START APP PAGE */
 #navbar-burger {
-    float:right;
+  float: right;
 }
 a {
-    text-decoration: none;
+  text-decoration: none;
+}
+.auth-errors-div {
+  margin-bottom: 5vh;
 }
 
 /* END APP PAGE */
@@ -11,14 +14,13 @@ a {
 /* START REGISTER PAGE */
 
 .register-div {
-  
-    /* background-image: url("../assets/fridge.jpeg");
+  /* background-image: url("../assets/fridge.jpeg");
     background-size: cover;
     background-position: center; */
 }
 
 .inside-register-div {
-    margin: 20px;
+  margin: 20px;
 }
 
 /* END REGISTER PAGE */

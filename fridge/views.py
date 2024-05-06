@@ -23,6 +23,7 @@ class CreateFridge(APIView):
 class AddItemToFridgeView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
+        print(data)
         data['fridge'] = kwargs.get("fridge_id")
 
         serializer = AddNewItemSerilaizer(data=data)

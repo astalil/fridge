@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Sign In</h1>
-    <div v-if="errors.length > 0">
-      {{ errors }}
+    <div class="auth-errors-div">
+      <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
     </div>
     <div class="input-div">
       <FloatLabel>
@@ -23,8 +23,8 @@
       <Button @click="submit" severity="success" label="Login" />
     </div>
     <div>
-        <p>Don't have an account yet? <a href="register">Sign Up</a></p>
-      </div>
+      <p>Don't have an account yet? <a href="register">Sign Up</a></p>
+    </div>
   </div>
 </template>
 
@@ -51,28 +51,43 @@ export default {
   },
   methods: {
     async submit() {
-      await axios
-        .post("/login/", this.form)
-        .then((response) => {
-          this.userStore.setToken(response.data);
-          axios.defaults.headers.common["Authorization"] =
-            "Bearer " + response.data.access;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.errors = [];
+      if (this.form.email === "") {
+        this.errors.push("Email field can not be empty");
+      }
+      if (this.form.password === "") {
+        this.errors.push("Password field can not be empty");
+      }
+      if (this.errors.length === 0) {
+        await axios
+          .post("/login/", this.form)
+          .then((response) => {
+            this.userStore.setToken(response.data);
+            axios.defaults.headers.common["Authorization"] =
+              "Bearer " + response.data.access;
 
-      await axios
-        .get("/user-data/")
-        .then((response) => {
-          console.log("this is login response: ", response.data)
-          this.userStore.setUserInfo(response.data.user, response.data.fridges);
-          
-          this.$router.push("/");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+            console.log("This is reponse: ", response.data);
+          })
+          .catch((error) => {
+            this.errors.push(error.response.data.detail);
+            console.log("This is the error: ", error);
+          });
+
+        await axios
+          .get("/user-data/")
+          .then((response) => {
+            console.log("this is login response: ", response.data);
+            this.userStore.setUserInfo(
+              response.data.user,
+              response.data.fridges
+            );
+
+            this.$router.push("/");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   },
 };

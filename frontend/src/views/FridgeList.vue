@@ -1,23 +1,46 @@
 <template>
   <div class="list">
-    <h2>My Fridges</h2> - <Button label="ADD NEW" @click="visible = true" />
-    
+    <Toast />
+    <h2>My Fridges</h2>
+    - <Button label="ADD NEW" @click="visible = true" />
+
     <div>
       <ol>
-        <li v-for="fridge in fridges" :key="fridge.id"><router-link :to="{ name: 'fridge-items', params: { id: fridge.id }}">{{ fridge.name }}</router-link> <span v-if="fridge.is_owner"> - {{ fridge.is_owner }} I own it</span></li>
+        <li v-for="fridge in fridges" :key="fridge.id">
+          <router-link
+            :to="{ name: 'fridge-items', params: { id: fridge.id } }"
+            >{{ fridge.name }}</router-link
+          >
+          <span v-if="fridge.is_owner"> - {{ fridge.is_owner }} I own it</span>
+        </li>
       </ol>
     </div>
 
     <div>
-      <Dialog v-model:visible="visible" modal header="Add new fridge" :style="{ width: '25rem' }">
+      <Dialog
+        v-model:visible="visible"
+        modal
+        header="Add new fridge"
+        :style="{ width: '25rem' }"
+      >
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="name" class="font-semibold w-6rem">Name</label>
-            <InputText id="name" class="flex-auto" v-model="name" autocomplete="off" />
+          <label for="name" class="font-semibold w-6rem">Name</label>
+          <InputText
+            id="name"
+            class="flex-auto"
+            v-model="name"
+            autocomplete="off"
+          />
         </div>
-        
+
         <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-            <Button type="button" label="Add" @click="addNewFridge"></Button>
+          <Button
+            type="button"
+            label="Cancel"
+            severity="secondary"
+            @click="visible = false"
+          ></Button>
+          <Button type="button" label="Add" @click="addNewFridge"></Button>
         </div>
       </Dialog>
     </div>
@@ -31,46 +54,48 @@ import axios from "axios";
 
 export default {
   setup() {
-    const store = useUserStore()
-    const toast = useToast()
+    const store = useUserStore();
+    const toast = useToast();
 
-    return{
+    return {
       fridges: store.fridges,
       store,
-      toast
-    }
+      toast,
+    };
   },
 
-  data(){
-    return{
+  data() {
+    return {
       visible: false,
-      name: null
-    }
+      name: null,
+    };
   },
 
   methods: {
     addNewFridge() {
       axios
-      .post("fridge/new-fridge", {name: this.name})
-      .then( (response) => {
-        console.log('Adding fridge response data: ', response.data)
-        if (response.data.message === 'error') {
-          //do something
-        }
-        else {
-          this.store.addFridge(response.data.fridge)
-          console.log("toast should open now")
-          this.toast.add({ severity: 'success', summary: 'New fridge added', detail: 'Successfully added a new fridge!', life: 3000 });
-         
-        }
-
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-      this.visible = false
-    }
-  }
-}
-
+        .post("fridge/new-fridge", { name: this.name })
+        .then((response) => {
+          console.log("Adding fridge response data: ", response.data);
+          if (response.data.message === "error") {
+            //do something
+          } else {
+            this.store.addFridge(response.data.fridge);
+            console.log("toast should open now");
+            console.log(this.toast);
+            this.toast.add({
+              severity: "success",
+              summary: "New fridge added",
+              detail: "Successfully added a new fridge!",
+              life: 3000,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      this.visible = false;
+    },
+  },
+};
 </script>

@@ -11,6 +11,7 @@ from fridge.models import Fridge
 class RegisterUserView(CreateAPIView):
     authentication_classes = []
     permission_classes = []
+    serializer_class = RegisterNewUserSerializer
 
     def post(self, request, *args, **kwargs):
        

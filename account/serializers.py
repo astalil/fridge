@@ -11,13 +11,7 @@ class RegisterNewUserSerializer(UserCreationForm):
         fields = ("email", "first_name", "last_name", "password1", "password2")
     
 
-    def clean_email(self):
-        print("yoloo")
-        email = self.cleaned_data.get("email")
-        if User.objects.filter(email=email).exists():
-            print("throwing an erorr")
-            raise serializers.ValidationError("This email address is already in use.")
-        return email
+   
 
 
 class ItemSerializer(serializers.ModelSerializer):

@@ -1,9 +1,8 @@
 <template>
   <div class="register-div">
     <div class="inside-register-div">
-    
       <h1>Create a New Account</h1>
-      <div class="errors-div">
+      <div class="auth-errors-div">
         <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
       </div>
       <div class="input-div">
@@ -49,8 +48,16 @@
 
 <script>
 import axios from "axios";
+import { useToast } from "primevue/usetoast";
 
 export default {
+  setup() {
+    const toast = useToast();
+    return {
+      toast,
+    };
+  },
+
   data() {
     return {
       form: {
@@ -108,9 +115,5 @@ export default {
 <style>
 .input-div {
   margin-bottom: 35px;
-}
-
-.errors-div {
-  margin-bottom: 5vh;
 }
 </style>
