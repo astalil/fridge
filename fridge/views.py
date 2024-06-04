@@ -114,3 +114,19 @@ class InviteActionView(APIView):
 
         print(serializer)
         return Response({'message': 'success', 'fridge': serializer})
+    
+class GetItemsView(APIView):
+    def get(self, request, *args, **kwargs):
+        print(kwargs.get("fridge_id"))
+        
+        check_user = (Q(pk = kwargs.get("fridge_id")) & (Q(members__in = [request.user.pk]) | Q(owner = request.user)))
+        print(Fridge.objects.filter(**check_user))
+        fridge = Fridge.objects.filter( *check_user)
+        if not fridge.exists():
+            print("errpr")
+            return Response({'message': 'error', 'error': 'User has no access to this fridge!'})
+        
+        print(fridge)
+        items = fridge.first().items.all()
+        print(items)
+        return Response({'message': 'success', 'items': items})

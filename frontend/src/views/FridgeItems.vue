@@ -144,10 +144,24 @@ export default {
       email: null,
       selectedItems: [],
       errors: [],
+      items: [],
     };
+  },
+  created() {
+    this.retrieveItems();
   },
 
   methods: {
+    retrieveItems() {
+      axios
+        .get(`/fridge/get-items/${this.fridge.id}`)
+        .then((response) => {
+          this.items = response.data.items;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async addNewItem() {
       this.errors = [];
       console.log(
