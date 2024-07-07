@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from account.models import User
 from django.db.models import Q
 from account.serializers import FridgeSerializer
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
 
 # Create your views here.
 class CreateFridge(APIView):
@@ -120,13 +122,13 @@ class GetItemsView(APIView):
         print(kwargs.get("fridge_id"))
         
         check_user = (Q(pk = kwargs.get("fridge_id")) & (Q(members__in = [request.user.pk]) | Q(owner = request.user)))
-        print(Fridge.objects.filter(**check_user))
-        fridge = Fridge.objects.filter( *check_user)
+        fridge = Fridge.objects.filter(check_user)
         if not fridge.exists():
             print("errpr")
             return Response({'message': 'error', 'error': 'User has no access to this fridge!'})
         
         print(fridge)
-        items = fridge.first().items.all()
-        print(items)
-        return Response({'message': 'success', 'items': items})
+        items = fridge.first().items.all().values("name", "quantity", "expiry_date")
+        print(list(items))
+
+        return JsonResponse({'message': 'success', 'items': list(items)})

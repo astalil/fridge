@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>I'm showing the fridge items</h1>
+    <h1 class="page-header">{{ fridge.name }}</h1>
     <ConfirmPopup></ConfirmPopup>
-    <div>
+    <div class="items-view-buttons">
       <Button label="ADD" @click="showAddPopUp = true" />
       <Button
         label="REMOVE"
@@ -157,6 +157,7 @@ export default {
         .get(`/fridge/get-items/${this.fridge.id}`)
         .then((response) => {
           this.items = response.data.items;
+          console.log("items:", response.data.items);
         })
         .catch((error) => {
           console.log(error);

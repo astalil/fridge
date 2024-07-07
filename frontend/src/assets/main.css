@@ -8,6 +8,9 @@ a {
 .auth-errors-div {
   margin-bottom: 5vh;
 }
+.page-header {
+  text-align: center;
+}
 
 /* END APP PAGE */
 
@@ -24,3 +27,10 @@ a {
 }
 
 /* END REGISTER PAGE */
+
+/* START FRIDGE ITEMS PAGE */
+
+.items-view-buttons {
+}
+
+/* END FRIDGE ITEMS PAGE */
