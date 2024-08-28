@@ -10,7 +10,7 @@ class CreateFridgeSerializer(serializers.ModelSerializer):
 class AddNewItemSerilaizer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ('name', 'quantity', 'expiry_date', 'fridge')
+        fields = ('name', 'quantity', 'expiry_date', 'fridge', 'image')
 
     def create(self, validated_data):
         item = Item.objects.create(**self.validated_data)

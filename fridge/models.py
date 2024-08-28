@@ -1,5 +1,6 @@
 from django.db import models
 from account.models import User
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 class Timestampable (models.Model):
@@ -15,7 +16,7 @@ class Fridge(models.Model):
         return self.name
        
 class Item(Timestampable):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
     quantity = models.PositiveIntegerField(default=1)
     fridge = models.ForeignKey(Fridge, on_delete=models.DO_NOTHING, related_name='items')
     expiry_date = models.DateTimeField()

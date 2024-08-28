@@ -180,7 +180,7 @@ export default {
       });
 
       console.log("Adding item reposnse code:", response.status);
-      if (response.status !== 200) {
+      if (response.data.errors) {
         this.errors.push("Failed to add the item, please rfresh the page");
       } else {
         const newItem = response.data.item;
