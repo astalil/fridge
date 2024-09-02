@@ -1,16 +1,14 @@
 <template>
   <div class="invites-div">
     <Toast />
-    <h1>Currently you have {{ invites.length }} invites!</h1>
+    <h1>Currently you have {{ inviteCount.length }} invites!</h1>
 
-    <div v-if="invites.length > 0">
+    <div v-if="inviteCount.length > 0">
       <ul>
-        <li style="margin-bottom: 10px" v-for="invite in invites" :key="invite">
-          <b
-            >{{ invite.sender_name }} {{ invite.sender_surname }} ({{
-              invite.fridge_name
-            }})</b
-          >
+        <li style="margin-bottom: 10px" v-for="invite in inviteCount" :key="invite">
+          <b>
+            {{ invite.sender_name }} {{ invite.sender_surname }} ({{invite.fridge_name}})
+          </b>
           sent you a fridge request.
           <Button
             icon="pi pi-plus"
@@ -39,37 +37,39 @@ import { useUserStore } from "@/store/user";
 
 export default {
   setup() {
-    const store = useUserStore();
+    const userStore = useUserStore();
     const toast = useToast();
     return {
-      store,
-      toast,
+      userStore,
+      toast
     };
   },
 
   data() {
     return {
-      invites: [],
       errors: [],
     };
   },
-  created() {
-    this.getInvites();
+  
+  computed: {
+    inviteCount() {
+      return this.userStore.inviteCount;
+    },
   },
 
   methods: {
-    getInvites() {
-      axios
-        .get("/fridge/invitations")
-        .then((response) => {
-          this.invites = response.data.invites;
-          console.log("these are the invites: ", response.data.invites);
-          console.log(typeof this.invites);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    // getInvites() {
+    //   axios
+    //     .get("/fridge/invitations")
+    //     .then((response) => {
+    //       this.invites = response.data.invites;
+    //       console.log("these are the invites: ", response.data.invites);
+    //       console.log(typeof this.invites);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
 
     handleInvite(inviteId, action) {
       axios
@@ -82,7 +82,7 @@ export default {
             response.data.message === "success" &&
             action === "accept"
           ) {
-            this.store.addFridge(response.data.fridge);
+            this.userStore.addFridge(response.data.fridge);
             this.toast.add({
               severity: "success",
               summary: "New fridge added",
@@ -92,9 +92,7 @@ export default {
           }
 
           if (response.data.message === "success") {
-            this.invites = this.invites.filter((invite) => {
-              return invite.id !== inviteId;
-            });
+            this.userStore.removeInvitation(inviteId)
           }
         })
         .catch((error) => {

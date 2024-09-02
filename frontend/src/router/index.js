@@ -4,6 +4,7 @@ import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
 import FridgeItems from "../views/FridgeItems.vue";
 import InvitationListView from "../views/InvitationListView.vue";
+import SettingsView from "../views/SettingsView.vue";
 
 import { useUserStore } from "@/store/user";
 const routes = [
@@ -59,6 +60,14 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/settings",
+    name: "settings",
+    component: SettingsView,
+    meta: {
+      requiresAuth: true,
+    }
+  }
 ];
 
 const router = createRouter({

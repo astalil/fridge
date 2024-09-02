@@ -73,12 +73,13 @@
                     <span
                       class="inline-flex align-items-center justify-content-center ml-auto bg-primary border-circle"
                       style="min-width: 1.5rem; height: 1.5rem"
-                      >3</span
+                      >{{ inviteCount.length }}</span
                     >
                   </router-link>
                 </li>
                 <li>
                   <router-link
+                    to="/settings"
                     v-ripple
                     class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
                   >
@@ -154,26 +155,30 @@ import axios from "axios";
 import { useUserStore } from "@/store/user";
 
 export default {
-  setup() {
-    const userStore = useUserStore();
-
-    return {
-      userStore,
-    };
-  },
   data() {
     return {
-      visible: false,
+      visible: false
     };
   },
   beforeCreate() {
-    this.userStore.initStore();
+    const userStore = useUserStore();
+    this.userStore = userStore;
+    userStore.initStore();
+    
     const token = this.userStore.user.access;
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     } else {
       axios.defaults.headers.common["Authorization"] = "";
     }
+  },
+  async mounted() {
+    await this.userStore.fetchInvites();
+  },
+  computed: {
+    inviteCount() {
+      return this.userStore.inviteCount;
+    },
   },
 };
 </script>

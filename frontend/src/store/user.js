@@ -14,6 +14,7 @@ export const useUserStore = defineStore({
       isAuthenticated: false,
     },
     fridges: [],
+    invites: []
   }),
 
   actions: {
@@ -168,11 +169,30 @@ export const useUserStore = defineStore({
       localStorage.setItem("fridges", JSON.stringify(this.fridges));
       console.log("Saved new fridge");
     },
+
+    async fetchInvites() {
+      if (this.user.isAuthenticated) {
+        try {
+          const response = await axios.get('/fridge/invitations');
+          this.invites = response.data.invites;
+        } catch (error) {
+          console.error('Error fetching invitations:', error);
+        }
+      } else {
+        this.invites = 0;
+      }
+    },
+
+    removeInvitation(inviteId) {
+      this.invites = this.invites.filter(invite => invite.id !== inviteId);
+    }
   },
 
   getters: {
     getFridgeById: (state) => (fridgeId) => {
       return state.fridges.find((fridge) => fridge.id === fridgeId);
     },
+
+    inviteCount: (state) => state.invites,
   },
 });
