@@ -1,47 +1,54 @@
 <template>
-  <div class="register-div">
-    <div class="inside-register-div">
-      <h1>Create a New Account</h1>
-      <div class="auth-errors-div">
-        <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-      </div>
-      <div class="input-div">
-        <FloatLabel>
-          <InputText id="first_name" v-model="form.first_name" />
-          <label for="first_name">First name</label>
-        </FloatLabel>
-      </div>
-      <div class="input-div">
-        <FloatLabel>
-          <InputText id="last_name" v-model="form.last_name" />
-          <label for="last_name">Last name</label>
-        </FloatLabel>
-      </div>
-      <div class="input-div">
-        <FloatLabel>
-          <InputText type="email" id="email" v-model="form.email" />
-          <label for="email">Email</label>
-        </FloatLabel>
-      </div>
-      <div class="input-div">
-        <FloatLabel>
-          <Password v-model="form.password1" inputId="password" />
-          <label for="password">Password</label>
-        </FloatLabel>
-      </div>
-      <div class="input-div">
-        <FloatLabel>
-          <Password v-model="form.password2" inputId="password2" />
-          <label for="password2">Repeat password</label>
-        </FloatLabel>
-      </div>
-      <div>
-        <Button @click="submit" severity="success" label="Register" />
-      </div>
+  <div class="register-container">
+    <h1>Create an Account</h1>
+    <div class="auth-errors-div">
+      <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+    </div>
+    <div class="input-div">
+      <InputText
+        id="first_name"
+        v-model="form.first_name"
+        placeholder="First name"
+      />
+    </div>
+    <div class="input-div">
+      <InputText
+        id="last_name"
+        v-model="form.last_name"
+        placeholder="Last name"
+      />
+    </div>
+    <div class="input-div">
+      <InputText
+        type="email"
+        id="email"
+        v-model="form.email"
+        placeholder="Email"
+      />
+    </div>
+    <div class="input-div">
+      <Password
+        v-model="form.password1"
+        inputId="password"
+        placeholder="Password"
+        toggleMask
+      />
+      <label for="password"></label>
+    </div>
+    <div class="input-div">
+      <Password
+        v-model="form.password2"
+        inputId="password2"
+        placeholder="Repeat password"
+        toggleMask
+      />
+    </div>
+    <div>
+      <Button @click="submit" severity="success" label="Register" />
+    </div>
 
-      <div>
-        <p>Already have an account? <a href="login">Sign In</a></p>
-      </div>
+    <div>
+      <p>Already have an account? <a href="login">Sign In</a></p>
     </div>
   </div>
 </template>
@@ -112,8 +119,21 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .input-div {
   margin-bottom: 35px;
+}
+
+.register-container {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+#email,
+#last_name,
+#first_name {
+  padding-right: 40px;
 }
 </style>

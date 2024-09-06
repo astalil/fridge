@@ -1,20 +1,25 @@
 <template>
-  <div>
-    <h1>Sign In</h1>
+  <div class="login-container">
+    <h1>Welcome Back!</h1>
     <div class="auth-errors-div">
       <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
     </div>
     <div class="input-div">
-      <FloatLabel>
-        <InputText type="email" id="email" v-model="form.email" />
-        <label for="email">Email</label>
-      </FloatLabel>
+      <InputText
+        type="email"
+        id="email"
+        v-model="form.email"
+        placeholder="Email"
+      />
     </div>
     <div class="input-div">
-      <FloatLabel>
-        <Password v-model="form.password" inputId="password" />
-        <label for="password">Password</label>
-      </FloatLabel>
+      <Password
+        v-model="form.password"
+        toggleMask
+        :feedback="false"
+        inputId="password"
+        placeholder="Password"
+      />
     </div>
     <div>
       <a href="login">Forgot your password?</a>
@@ -81,6 +86,7 @@ export default {
               response.data.user,
               response.data.fridges
             );
+            this.userStore.invites = response.data.invites;
 
             this.$router.push("/");
           })
@@ -93,8 +99,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .input-div {
   margin-bottom: 35px;
+}
+#email {
+  padding-right: 40px;
+}
+.login-container {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding-bottom: 20px;
+  text-align: center;
 }
 </style>

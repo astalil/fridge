@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <nav>
-      <span>FreshAlert</span>
+      <span class="page-title">FreshAlert</span>
       <Sidebar v-model:visible="visible">
         <template #container="{ closeCallback }">
           <div class="flex flex-column h-full">
@@ -71,6 +71,7 @@
                     <i class="pi pi-comments mr-2"></i>
                     <span class="font-medium">Invitations</span>
                     <span
+                      v-if="userStore.user.isAuthenticated"
                       class="inline-flex align-items-center justify-content-center ml-auto bg-primary border-circle"
                       style="min-width: 1.5rem; height: 1.5rem"
                       >{{ inviteCount.length }}</span
@@ -157,14 +158,14 @@ import { useUserStore } from "@/store/user";
 export default {
   data() {
     return {
-      visible: false
+      visible: false,
     };
   },
   beforeCreate() {
     const userStore = useUserStore();
     this.userStore = userStore;
     userStore.initStore();
-    
+
     const token = this.userStore.user.access;
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -185,7 +186,7 @@ export default {
 
 <style>
 .content {
-  min-height: 90vh;
+  min-height: 70vh;
   margin-top: 10vh;
 }
 </style>

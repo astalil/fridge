@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from .serializers import RegisterNewUserSerializer, FridgeSerializer
 from rest_framework.views import APIView
 from django.db.models import Q
-from fridge.models import Fridge
+from fridge.models import Fridge, Invitation
+from fridge.serializer import InvitationSerilizer
 
 # Create your views here.
 
@@ -39,6 +40,9 @@ class UserDataView(APIView):
         print(fridge_data)
         #return JsonResponse({'fridges': fridge_data})
 
+        invites = Invitation.objects.filter(receiver = user, accepted = False, declined = False)
+        serializer = InvitationSerilizer(invites, many=True).data
+
         data = {
             'user':
             {
@@ -47,8 +51,10 @@ class UserDataView(APIView):
                 'name': user.first_name,
                 'surname': user.last_name
             },
-            'fridges': fridge_data 
+            'fridges': fridge_data,
+            'invites': serializer
         }
+
         return Response(data)
 
 

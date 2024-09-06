@@ -1,28 +1,28 @@
 <template>
-  <div class="list">
-    <Toast />
-    <h2>My Fridges</h2>
-    - <Button label="ADD NEW" @click="visible = true" />
+  <div>
+    <div class="list">
+      <Toast />
+      <div>
+        <p>Below you can see a list of fridges you're apart off!</p>
+        <Button label="ADD NEW" @click="visible = true" />
+      </div>
 
-    <div>
-      <ol>
-        <li v-for="fridge in fridges" :key="fridge.id">
-          <router-link
-            :to="{ name: 'fridge-items', params: { id: fridge.id } }"
-            >{{ fridge.name }}</router-link
-          >
-          <span v-if="fridge.is_owner"> - {{ fridge.is_owner }} I own it</span>
-        </li>
-      </ol>
+      <div>
+        <ol>
+          <li v-for="fridge in fridges" :key="fridge.id">
+            <router-link
+              :to="{ name: 'fridge-items', params: { id: fridge.id } }"
+              >{{ fridge.name }}</router-link
+            >
+            <span v-if="fridge.is_owner">
+              - {{ fridge.is_owner }} I own it</span
+            >
+          </li>
+        </ol>
+      </div>
     </div>
-
     <div>
-      <Dialog
-        v-model:visible="visible"
-        modal
-        header="Add new fridge"
-        :style="{ width: '25rem' }"
-      >
+      <Dialog v-model:visible="visible" modal header="Add your fridge">
         <div class="flex align-items-center gap-3 mb-3">
           <label for="name" class="font-semibold w-6rem">Name</label>
           <InputText
@@ -99,3 +99,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.list {
+  text-align: center;
+}
+ol {
+  padding: 0;
+  list-style: none;
+}
+</style>

@@ -1,17 +1,30 @@
 <template>
   <div>
-    <h1 class="page-header">{{ fridge.name }}</h1>
-    <ConfirmPopup></ConfirmPopup>
-    <div class="items-view-buttons">
-      <Button label="ADD" @click="showAddPopUp = true" />
-      <Button
-        label="REMOVE"
-        :disabled="selectedItems.length === 0"
-        @click="removeItems"
-      />
-      <Button label="INVITE PEOPLE" @click="showInvitePopUp = true" />
+    <div class="items-header">
+      <h1 class="page-header">
+        {{ fridge.name }}
+        <Button
+          icon="pi pi-plus"
+          aria-label="Save"
+          style="font-size: 10px"
+          @click="showInvitePopUp = true"
+        />
+      </h1>
+      <ConfirmPopup></ConfirmPopup>
+      <div class="items-view-buttons">
+        <Button
+          label="ADD"
+          style="margin-right: 10px"
+          @click="showAddPopUp = true"
+        />
+        <Button
+          label="REMOVE"
+          :disabled="selectedItems.length === 0"
+          @click="removeItems"
+        />
+      </div>
+      <ConfirmDialog></ConfirmDialog>
     </div>
-    <ConfirmDialog></ConfirmDialog>
 
     <div v-if="errors.length > 0">
       {{ errors }}
@@ -19,7 +32,7 @@
 
     <div>
       <OrderList v-model="fridge.items" listStyle="height:auto" dataKey="id">
-        <template #header> List of Products </template>
+        <template #header> List of Items </template>
         <template #item="slotProps">
           <div
             class="flex flex-wrap p-2 align-items-center gap-3 item-div"
@@ -43,11 +56,14 @@
       <Dialog
         v-model:visible="showAddPopUp"
         modal
-        header="Edit Profile"
+        header="Add Item"
         :style="{ width: '25rem' }"
       >
-        <span class="p-text-secondary block mb-5">Add new item</span>
-        <div class="flex align-items-center gap-3 mb-3">
+        <span class="p-text-secondary block mb-6">Add new item</span>
+        <div v-if="fridge_error.length > 0">
+          {{ fridge_error }}
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
           <FloatLabel>
             <InputText id="first_name" v-model="name" />
             <label for="first_name">Name</label>
@@ -64,9 +80,9 @@
             <Calendar
               v-model="expiryDate"
               dateFormat="yy/mm/dd"
-              inputId="birth_date"
+              inputId="expiry_date"
             />
-            <label for="birth_date">Birth Date</label>
+            <label for="expiry_date">Expiry date</label>
           </FloatLabel>
         </div>
 
@@ -145,6 +161,7 @@ export default {
       selectedItems: [],
       errors: [],
       items: [],
+      fridge_error: [],
     };
   },
   created() {
@@ -164,7 +181,7 @@ export default {
         });
     },
     async addNewItem() {
-      this.errors = [];
+      this.fridge_error = [];
       console.log(
         "these are the form values: ",
         this.name,
@@ -173,23 +190,28 @@ export default {
       );
       console.log("This the ID: ", this.fridge.id);
 
-      const response = await axios.post(`/fridge/${this.fridge.id}/add-item`, {
-        name: this.name,
-        quantity: this.quantity,
-        expiry_date: this.expiryDate,
-      });
+      axios
+        .post(`/fridge/${this.fridge.id}/add-item`, {
+          name: this.name,
+          quantity: this.quantity,
+          expiry_date: this.expiryDate,
+        })
+        .then((response) => {
+          console.log("Adding item reposnse code:", response.status);
+          if (response.data.errors) {
+            this.fridge_error.push(response.data.errors);
+          } else {
+            const newItem = response.data.item;
+            console.log("newitem", newItem);
 
-      console.log("Adding item reposnse code:", response.status);
-      if (response.data.errors) {
-        this.errors.push("Failed to add the item, please rfresh the page");
-      } else {
-        const newItem = response.data.item;
-        console.log("newitem", newItem);
-
-        this.store.addItemToFridge(newItem, newItem.fridge);
-        this.showAddPopUp = false;
-        location.reload();
-      }
+            this.store.addItemToFridge(newItem, newItem.fridge);
+            this.showAddPopUp = false;
+            location.reload();
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
     },
 
     invitePeople() {
@@ -254,6 +276,9 @@ export default {
 };
 </script>
 <style>
+.items-header {
+  text-align: center;
+}
 .p-orderlist-list > li {
   padding: 0;
 }
