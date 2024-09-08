@@ -72,29 +72,34 @@ export default {
               "Bearer " + response.data.access;
 
             console.log("This is reponse: ", response.data);
+            this.getUserData()
           })
           .catch((error) => {
             this.errors.push(error.response.data.detail);
             console.log("This is the error: ", error);
           });
 
-        await axios
-          .get("/user-data/")
-          .then((response) => {
-            console.log("this is login response: ", response.data);
-            this.userStore.setUserInfo(
-              response.data.user,
-              response.data.fridges
-            );
-            this.userStore.invites = response.data.invites;
-
-            this.$router.push("/");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        
       }
     },
+
+    async getUserData() {
+      await axios
+        .get("/user-data/")
+        .then((response) => {
+          console.log("this is login response: ", response.data);
+          this.userStore.setUserInfo(
+            response.data.user,
+            response.data.fridges
+          );
+          this.userStore.invites = response.data.invites;
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
   },
 };
 </script>

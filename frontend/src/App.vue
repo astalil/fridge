@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <nav>
-      <span class="page-title">FreshAlert</span>
+      <span class="page-title"><b>FreshAlert</b></span>
       <Sidebar v-model:visible="visible">
         <template #container="{ closeCallback }">
           <div class="flex flex-column h-full">
